@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GreenPulse</title>
+  <style>
+    :root {
+      --bg1: #07120f;
+      --bg2: #0f2a1d;
+      --card: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.14);
+      --text: #ecfff4;
+      --muted: rgba(236, 255, 244, 0.72);
+      --green: #45d483;
+      --green-2: #78f2a7;
+      --blue: #66c7ff;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(69, 212, 131, 0.25), transparent 28%),
+        radial-gradient(circle at top right, rgba(102, 199, 255, 0.18), transparent 24%),
+        linear-gradient(145deg, var(--bg1), var(--bg2));
+      overflow-x: hidden;
+    }
+
+    .bg-blur {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(120, 242, 167, 0.18), transparent 16%),
+        radial-gradient(circle at 85% 30%, rgba(102, 199, 255, 0.16), transparent 18%),
+        radial-gradient(circle at 50% 80%, rgba(69, 212, 131, 0.12), transparent 18%);
+      filter: blur(10px);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
+      padding: 28px 0 18px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      padding: 10px 14px;
+      border: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+    }
+
+    .logo {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      box-shadow: 0 0 18px rgba(69, 212, 131, 0.6);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    .subtitle {
+      max-width: 700px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(120, 242, 167, 0.35);
+      background: rgba(255, 255, 255, 0.11);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .stat {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+    }
+
+    .value {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .impact {
+      font-size: 4rem;
+      font-weight: 900;
+      line-height: 1;
+      margin: 10px 0 8px;
+      background: linear-gradient(135deg, var(--green-2), var(--blue));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .progress-wrap {
+      margin-top: 16px;
+      background: rgba(255,255,255,0.08);
+      height: 16px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.09);
+    }
+
+    .progress {
+      width: 15%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      box-shadow: 0 0 18px rgba(69, 212, 131, 0.55);
+      transition: width 0.35s ease;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .btn {
+      border: none;
+      outline: none;
+      color: #062012;
+      font-weight: 800;
+      padding: 15px 16px;
+      border-radius: 18px;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--green-2), var(--green));
+      box-shadow: 0 12px 28px rgba(69, 212, 131, 0.2);
+      transition: transform 0.2s ease, filter 0.2s ease;
+      font-size: 0.98rem;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px) scale(1.01);
+      filter: brightness(1.05);
+    }
+
+    .btn.secondary {
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: none;
+    }
+
+    .tip {
+      padding: 18px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(69, 212, 131, 0.18), rgba(102, 199, 255, 0.12));
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .list {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .list li {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+    }
+
+    .section-title {
+      margin: 0 0 10px;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .footer {
+      margin-top: 18px;
+      text-align: center;
+      color: rgba(236,255,244,0.6);
+      font-size: 0.95rem;
+      padding-bottom: 10px;
+    }
+
+    @media (max-width: 860px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .stats, .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: 2.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-blur"></div>
+
+  <div class="container">
+    <div class="hero">
+      <div class="brand">
+        <div class="logo"></div>
+        <span>GreenPulse</span>
+      </div>
+
+      <h1>Small actions. <br>Huge carbon impact.</h1>
+      <p class="subtitle">
+        A beautiful eco-app that helps people build greener habits, reduce pollution,
+        and track their daily environmental contribution in a clean, motivating way.
+      </p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="section-title">Today’s Impact</div>
+        <div class="impact" id="score">0</div>
+        <div class="label">Eco points earned</div>
+
+        <div class="progress-wrap">
+          <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="label">Actions</div>
+            <div class="value" id="totalActions">0</div>
+          </div>
+          <div class="stat">
+            <div class="label">Streak</div>
+            <div class="value">7 Days</div>
+          </div>
+          <div class="stat">
+            <div class="label">Goal</div>
+            <div class="value">100</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Daily Tip</div>
+        <div class="tip" id="tip">
+          Use public transport or walk for short trips to reduce emissions and keep the air cleaner.
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="section-title">Log Eco Actions</div>
+        <div class="actions">
+          <button class="btn" onclick="addAction('Walked or biked instead of driving', 10)">Bike / Walk</button>
+          <button class="btn" onclick="addAction('Recycled waste properly', 8)">Recycle</button>
+          <button class="btn" onclick="addAction('Saved electricity today', 7)">Save Energy</button>
+          <button class="btn" onclick="addAction('Used a reusable bottle or bag', 5)">Reusable Item</button>
+          <button class="btn secondary" onclick="addAction('Planted a tree or supported green life', 12)">Plant / Support</button>
+          <button class="btn secondary" onclick="resetApp()">Reset Progress</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Recent Actions</div>
+        <ul class="list" id="actions">
+          <li>No actions logged yet.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+      <div class="section-title">Eco Checklist</div>
+      <ul class="list">
+        <li>Turn off lights and unplug devices when not in use.</li>
+        <li>Carry a reusable bottle, cup, and bag.</li>
+        <li>Separate recyclables from regular waste.</li>
+        <li>Take shorter showers to save water.</li>
+        <li>Choose public transport, cycling, or walking whenever possible.</li>
+      </ul>
+    </div>
+
+    <div class="footer">Designed for a cleaner planet and a nicer everyday experience.</div>
+  </div>
+
+  <script>
+    let score = 0;
+    let actions = 0;
+
+    const tips = [
+      "Try one no-car day this week and replace it with walking or public transport.",
+      "Switch off unused chargers to save energy instantly.",
+      "Use reusable items instead of single-use plastic.",
+      "Recycle properly and keep contamination out of bins.",
+      "Plant something green or support a local cleanup drive."
+    ];
+
+    const scoreEl = document.getElementById("score");
+    const progressEl = document.getElementById("progress");
+    const tipEl = document.getElementById("tip");
+    const actionsEl = document.getElementById("actions");
+    const totalActionsEl = document.getElementById("totalActions");
+
+    function updateUI() {
+      scoreEl.textContent = score;
+      totalActionsEl.textContent = actions;
+      progressEl.style.width = Math.min(score, 100) + "%";
+    }
+
+    function addAction(text, points) {
+      score += points;
+      actions += 1;
+      updateUI();
+
+      if (actionsEl.children.length === 1 && actionsEl.children[0].textContent === "No actions logged yet.") {
+        actionsEl.innerHTML = "";
+      }
+
+      const item = document.createElement("li");
+      item.textContent = `${text}  +${points} pts`;
+      actionsEl.prepend(item);
+
+      tipEl.textContent = tips[Math.floor(Math.random() * tips.length)];
+    }
+
+    function resetApp() {
+      score = 0;
+      actions = 0;
+      actionsEl.innerHTML = '<li>No actions logged yet.</li>';
+      tipEl.textContent = "Start again with one small eco-action today.";
+      updateUI();
+    }
+
+    updateUI();
+  </script>
+</body>
+</html>
